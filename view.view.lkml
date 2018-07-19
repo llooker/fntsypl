@@ -75,3 +75,15 @@ view: view {
 }
 
 explore: view {}
+
+
+
+view: sweet_name {
+  derived_table: {
+    sql: select 1 as test ;;
+  }
+
+  dimension: test {}
+}
+
+explore: sweet_name {}
