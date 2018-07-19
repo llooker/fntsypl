@@ -10,13 +10,8 @@ view: pdt_mapping {
 #       -- add additional pdts here...
   }
 
-  dimension: name {
-    sql: ${TABLE}.name ;;
-  }
-
-  dimension: internal_name {
-    sql: ${TABLE}.internal_name ;;
-  }
+  dimension: name {}
+  dimension: internal_name {}
 
   dimension: view_sql_mysql {
     sql: CONCAT('CREATE OR REPLACE VIEW pdt.', ${name} , ' AS ',
@@ -67,8 +62,8 @@ view: view {
   derived_table: {
     datagroup_trigger: dg
     create_process: {
-#       sql_step:
-#         DROP VIEW IF EXISTS not_obscure_table_name ;;
+      sql_step:
+        DROP VIEW IF EXISTS not_obscure_table_name ;;
       sql_step:
         CREATE VIEW test as
         SELECT web_name FROM ${table.SQL_TABLE_NAME}; ;;
