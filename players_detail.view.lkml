@@ -9,6 +9,11 @@ view: players_detail {
     hidden: yes
   }
 
+  dimension: minutes {
+    type: number
+    sql: ${TABLE}.minutes ;;
+  }
+
   dimension: ppg {
     type: number
     sql: case when ${minutes} > 0 then ${points} else ;;
@@ -18,13 +23,14 @@ view: players_detail {
     label: "VAPM"
     description: "Value add per minutes ( (Points - 2) / Value )"
     type: number
-    sql: case when ${minutes} > 0 then (${points} - 2) / (${players.now_cost} / 10) else 0 end ;;
+    sql: (${players.points_per_game} - 2) / (${players.now_cost} / 10) ;;
   }
 
-  measure: avg_vapm {
-    label: "Average VAPM"
-    type: average
-    sql: ${vapm} ;;
+  dimension: round {
+    label: "Gameweek"
+    type: number
+    sql: ${TABLE}.round ;;
+    hidden:  yes
   }
 
   dimension: assists {
@@ -47,11 +53,89 @@ view: players_detail {
     sql: ${TABLE}.value ;;
   }
 
+  dimension: element {
+    description: "Player ID"
+    type: number
+    sql: ${TABLE}.element ;;
+    hidden: yes
+  }
+
+  dimension: fixture {
+    type: number
+    sql: ${TABLE}.fixture ;;
+    hidden: yes
+  }
+
+  dimension: goals {
+    type: number
+    sql: ${TABLE}.goals_scored ;;
+    hidden: yes
+  }
+
+
+
+  measure: total_minutes {
+    type: sum
+    sql: ${minutes} ;;
+  }
+
+  measure: average_minutes {
+    type: average
+    sql: ${minutes} ;;
+    value_format_name: decimal_1
+  }
+
+  measure: avg_vapm {
+    label: "Average VAPM"
+    type: average
+    sql: ${vapm} ;;
+    value_format_name: decimal_4
+  }
+
+  measure: total_goals_scored {
+    type: sum
+    sql: ${goals} ;;
+    drill_fields: [goals*]
+  }
+
+  measure: total_own_goals {
+    type: sum
+    sql: ${own_goals} ;;
+    drill_fields: [goals*]
+  }
+
+  measure: total_goals {
+    type: number
+    sql: ${total_goals_scored} + ${total_own_goals} ;;
+    drill_fields: [goals*]
+  }
+
   measure: total_assists {
     type: sum
     sql: ${assists} ;;
     drill_fields: [goals*]
   }
+
+  measure: count_matches {
+    type: count
+    drill_fields: [id]
+  }
+
+  set: goals {
+    fields: [players.web_name, own_goals, goals, assists]
+  }
+
+#
+#   dimension: fouls {
+#     type: number
+#     sql: ${TABLE}.fouls ;;
+#   }
+#
+#   dimension: goals_conceded {
+#     type: number
+#     sql: ${TABLE}.goals_conceded ;;
+#   }
+#
 
 #   dimension: attempted_passes {
 #     type: number
@@ -108,12 +192,7 @@ view: players_detail {
 #     sql: ${TABLE}.ea_index ;;
 #   }
 #
-  dimension: element {
-    description: "Player ID"
-    type: number
-    sql: ${TABLE}.element ;;
-    hidden: yes
-  }
+
 #
 #   dimension: errors_leading_to_goal {
 #     type: number
@@ -125,44 +204,6 @@ view: players_detail {
 #     sql: ${TABLE}.errors_leading_to_goal_attempt ;;
 #   }
 #
-  dimension: fixture {
-    type: number
-    sql: ${TABLE}.fixture ;;
-    hidden: yes
-  }
-#
-#   dimension: fouls {
-#     type: number
-#     sql: ${TABLE}.fouls ;;
-#   }
-#
-#   dimension: goals_conceded {
-#     type: number
-#     sql: ${TABLE}.goals_conceded ;;
-#   }
-#
-  dimension: goals {
-    type: number
-    sql: ${TABLE}.goals_scored ;;
-  }
-
-  measure: total_goals_scored {
-    type: sum
-    sql: ${goals} ;;
-    drill_fields: [goals*]
-  }
-
-  measure: total_own_goals {
-    type: sum
-    sql: ${own_goals} ;;
-    drill_fields: [goals*]
-  }
-
-  measure: total_goals {
-    type: number
-    sql: ${total_goals_scored} + ${total_own_goals} ;;
-    drill_fields: [goals*]
-  }
 #
 #   dimension: ict_index {
 #     type: number
@@ -199,10 +240,6 @@ view: players_detail {
 #     sql: ${TABLE}.loaned_out ;;
 #   }
 #
-  dimension: minutes {
-    type: number
-    sql: ${TABLE}.minutes ;;
-  }
 #
 #   dimension: offside {
 #     type: number
@@ -249,12 +286,6 @@ view: players_detail {
 #     sql: ${TABLE}.red_cards ;;
 #   }
 #
-  dimension: round {
-    label: "Gameweek"
-    type: number
-    sql: ${TABLE}.round ;;
-    hidden:  yes
-  }
 #
 #   dimension: saves {
 #     type: number
@@ -333,13 +364,4 @@ view: players_detail {
 #     type: sum
 #     sql: ${yellow_cards} ;;
 #   }
-
-  measure: count {
-    type: count
-    drill_fields: [id]
-  }
-
-  set: goals {
-    fields: [players.web_name, own_goals, goals, assists]
-  }
 }

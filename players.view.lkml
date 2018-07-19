@@ -29,6 +29,20 @@ view: players {
     hidden: yes
   }
 
+
+  dimension: total_points {
+    type: number
+    sql: ${TABLE}.total_points ;;
+    hidden: yes
+  }
+
+  dimension: total_points_tier {
+    type: tier
+    style: integer
+    tiers: [1, 50, 100, 150, 200]
+    sql: ${total_points} ;;
+  }
+
   dimension: total_goals_scored_tier {
     type: tier
     style: integer
@@ -40,17 +54,23 @@ view: players {
   dimension: now_cost {
     label: "Price"
     type: number
-    sql: ${TABLE}.now_cost ;;
-    value_format_name: gbp
+    sql: ${TABLE}.now_cost / 10 ;;
+    value_format: "\"£\"#.0"
+  }
+
+  dimension: points_per_game {
+    type: number
+    sql: ${TABLE}.points_per_game ;;
   }
 
   measure: count {
     type: count
   }
 
-  measure: points_per_game {
+  measure: avg_points_per_game {
     type: number
-    sql: ${TABLE}.points_per_game ;;
+    sql: ${points_per_game} ;;
+    value_format_name: decimal_2
   }
 
 
@@ -293,11 +313,7 @@ view: players {
 #     type: number
 #     sql: ${TABLE}.threat ;;
 #   }
-#
-#   dimension: total_points {
-#     type: number
-#     sql: ${TABLE}.total_points ;;
-#   }
+
 #
 #   dimension: transfers_in {
 #     type: number
