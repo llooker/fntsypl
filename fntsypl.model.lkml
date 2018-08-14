@@ -24,3 +24,11 @@ explore: players {
 #     relationship: many_to_one
 #   }
 }
+
+explore: fixture_table {
+  label: "Fixtures"
+
+#   join: teams {
+#
+#   }
+}

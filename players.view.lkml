@@ -29,7 +29,6 @@ view: players {
     hidden: yes
   }
 
-
   dimension: total_points {
     type: number
     sql: ${TABLE}.total_points ;;
