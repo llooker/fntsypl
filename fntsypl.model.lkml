@@ -4,6 +4,7 @@ include: "*.view.lkml"         # include all views in this project
 
 explore: players {
   join: players_detail {
+    view_label: "Players"
     sql_on: ${players.id} = ${players_detail.element} ;;
     relationship: one_to_many
   }
@@ -22,13 +23,5 @@ explore: players {
 #     from: teams
 #     sql_on: ${players_detail.} = ${opposition.id} ;;
 #     relationship: many_to_one
-#   }
-}
-
-explore: fixture_table {
-  label: "Fixtures"
-
-#   join: teams {
-#
 #   }
 }

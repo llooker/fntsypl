@@ -12,6 +12,7 @@ view: players {
     label: "Name"
     type: string
     sql: CONVERT(CAST(CONVERT(${TABLE}.web_name USING latin1) AS binary) USING utf8) ;;
+    required_fields: [id]
   }
 
   dimension: element_type {
@@ -60,6 +61,7 @@ view: players {
   dimension: points_per_game {
     type: number
     sql: ${TABLE}.points_per_game ;;
+    hidden: yes
   }
 
   measure: count {

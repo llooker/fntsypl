@@ -2,6 +2,7 @@ view: players_detail {
   view_label: "Match Performance"
   sql_table_name: fpl.players_detail ;;
 
+# default dimensions
   dimension: id {
     primary_key: yes
     type: number
@@ -12,18 +13,6 @@ view: players_detail {
   dimension: minutes {
     type: number
     sql: ${TABLE}.minutes ;;
-  }
-
-  dimension: ppg {
-    type: number
-    sql: case when ${minutes} > 0 then ${points} else ;;
-  }
-
-  dimension: vapm {
-    label: "VAPM"
-    description: "Value add per minutes ( (Points - 2) / Value )"
-    type: number
-    sql: (${players.points_per_game} - 2) / (${players.now_cost} / 10) ;;
   }
 
   dimension: round {
@@ -43,36 +32,36 @@ view: players_detail {
     sql: ${TABLE}.total_points ;;
   }
 
-  measure: total_points {
-    type: sum
-    sql: ${points} ;;
-  }
-
   dimension: value {
     type: number
     sql: ${TABLE}.value ;;
   }
 
-  dimension: element {
-    description: "Player ID"
+  dimension: own_goals {
     type: number
-    sql: ${TABLE}.element ;;
-    hidden: yes
+    sql: ${TABLE}.own_goals ;;
   }
 
-  dimension: fixture {
-    type: number
-    sql: ${TABLE}.fixture ;;
-    hidden: yes
-  }
+# built dimensions
 
-  dimension: goals {
+  dimension: vapm {
+    label: "VAPM"
+    description: "Value add per minutes ( (Points - 2) / Value )"
     type: number
-    sql: ${TABLE}.goals_scored ;;
-    hidden: yes
+    sql: (${points} - 2) / (${players.now_cost} / 10) ;;
   }
 
 
+# measures
+  measure: total_points {
+    type: sum
+    sql: ${points} ;;
+  }
+
+  measure: average_points {
+    type: sum
+    sql: ${points} ;;
+  }
 
   measure: total_minutes {
     type: sum
@@ -85,7 +74,7 @@ view: players_detail {
     value_format_name: decimal_1
   }
 
-  measure: avg_vapm {
+  measure: average_vapm {
     label: "Average VAPM"
     type: average
     sql: ${vapm} ;;
@@ -121,9 +110,41 @@ view: players_detail {
     drill_fields: [id]
   }
 
+# set
   set: goals {
     fields: [players.web_name, own_goals, goals, assists]
   }
+
+# hidden
+  dimension: ppg {
+    type: number
+    sql: case when ${minutes} > 0 then ${points} else ;;
+    hidden: yes
+  }
+
+  dimension: element {
+    description: "Player ID"
+    type: number
+    sql: ${TABLE}.element ;;
+    hidden: yes
+  }
+
+  dimension: fixture {
+    type: number
+    sql: ${TABLE}.fixture ;;
+    hidden: yes
+  }
+
+  dimension: goals {
+    type: number
+    sql: ${TABLE}.goals_scored ;;
+    hidden: yes
+  }
+}
+
+view: players_extended {
+  extends: [players_detail]
+
 
 #
 #   dimension: fouls {
@@ -256,10 +277,6 @@ view: players_detail {
 #     sql: ${TABLE}.opponent_team ;;
 #   }
 #
-  dimension: own_goals {
-    type: number
-    sql: ${TABLE}.own_goals ;;
-  }
 
 #   dimension: penalties_conceded {
 #     type: number
