@@ -1,6 +1,8 @@
 view: players {
   sql_table_name: fpl.players ;;
+  view_label: "Players"
 
+# default dimensions
   dimension: id {
     primary_key: yes
     type: number
@@ -9,6 +11,7 @@ view: players {
   }
 
   dimension: web_name {
+    view_label: "Attributes"
     label: "Name"
     type: string
     sql: CONVERT(CAST(CONVERT(${TABLE}.web_name USING latin1) AS binary) USING utf8) ;;
@@ -16,6 +19,7 @@ view: players {
   }
 
   dimension: element_type {
+    view_label: "Attributes"
     label: "Position"
     type: string
     sql: case when ${TABLE}.element_type = 1 then 'GK'
@@ -24,19 +28,14 @@ view: players {
          when ${TABLE}.element_type = 4 then 'FWD' end ;;
   }
 
-  dimension: goals_scored {
+  dimension: form {
+    view_label: "Season Statistics"
     type: number
-    sql: ${TABLE}.goals_scored ;;
-    hidden: yes
-  }
-
-  dimension: total_points {
-    type: number
-    sql: ${TABLE}.total_points ;;
-    hidden: yes
+    sql: ${TABLE}.form ;;
   }
 
   dimension: total_points_tier {
+    view_label: "Season Statistics"
     type: tier
     style: integer
     tiers: [1, 50, 100, 150, 200]
@@ -44,6 +43,7 @@ view: players {
   }
 
   dimension: total_goals_scored_tier {
+    view_label: "Season Statistics"
     type: tier
     style: integer
     tiers: [1, 3, 5, 7, 10, 15, 20]
@@ -52,6 +52,7 @@ view: players {
   }
 
   dimension: now_cost {
+    view_label: "Attributes"
     label: "Price"
     type: number
     sql: ${TABLE}.now_cost / 10 ;;
@@ -65,6 +66,7 @@ view: players {
   }
 
   measure: count {
+    label: "Count of Players"
     type: count
   }
 
@@ -74,8 +76,39 @@ view: players {
     value_format_name: decimal_2
   }
 
+  dimension: transfers_out_event {
+    view_label: "Fantasy Metrics"
+    description: "Transfers out this gameweek"
+    type: number
+    sql: ${TABLE}.transfers_out_event ;;
+  }
 
+  dimension: transfers_in_event {
+    view_label: "Fantasy Metrics"
+    description: "Transfers in this gameweek"
+    type: number
+    sql: ${TABLE}.transfers_in_event ;;
+  }
 
+# hidden dimensions
+
+  dimension: goals_scored {
+    type: number
+    sql: ${TABLE}.goals_scored ;;
+    hidden: yes
+  }
+
+  dimension: total_points {
+    type: number
+    sql: ${TABLE}.total_points ;;
+    hidden: yes
+  }
+
+  dimension: team {
+    type: number
+    sql: ${TABLE}.team ;;
+    hidden: yes
+  }
 
 
 #   dimension: chance_of_playing_next_round {
@@ -93,11 +126,6 @@ view: players {
 #     sql: ${TABLE}.dreamteam_count ;;
 #   }
 #
-#   dimension: form {
-#     type: number
-#     sql: ${TABLE}.form ;;
-#   }
-
 #   dimension: assists {
 #     type: number
 #     sql: ${TABLE}.assists ;;
@@ -148,14 +176,10 @@ view: players {
 #     sql: ${TABLE}.creativity ;;
 #   }
 #
-#
-#
 #   dimension: ea_index {
 #     type: number
 #     sql: ${TABLE}.ea_index ;;
 #   }
-#
-#
 #
 #   dimension: ep_next {
 #     type: number
@@ -299,11 +323,6 @@ view: players {
 #     sql: ${TABLE}.status ;;
 #   }
 
-  dimension: team {
-    type: number
-    sql: ${TABLE}.team ;;
-    hidden: yes
-  }
 #
 #   dimension: team_code {
 #     type: number
@@ -321,20 +340,11 @@ view: players {
 #     sql: ${TABLE}.transfers_in ;;
 #   }
 
-  dimension: transfers_in_event {
-    type: number
-    sql: ${TABLE}.transfers_in_event ;;
-  }
-
 #   dimension: transfers_out {
 #     type: number
 #     sql: ${TABLE}.transfers_out ;;
 #   }
 
-  dimension: transfers_out_event {
-    type: number
-    sql: ${TABLE}.transfers_out_event ;;
-  }
 
 #   dimension: value_form {
 #     type: number
@@ -356,4 +366,9 @@ view: players {
 #     type: sum
 #     sql: ${yellow_cards} ;;
 #   }
+}
+
+view: players_extended {
+  extends: [players]
+  view_label: "Players - Extended Detail"
 }

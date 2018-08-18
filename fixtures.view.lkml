@@ -71,10 +71,11 @@ view: fixtures {
 #     sql: ${TABLE}.event_day ;;
 #   }
 #
-#   dimension: finished {
-#     type: number
-#     sql: ${TABLE}.finished ;;
-#   }
+  dimension: finished {
+    type: number
+    sql: ${TABLE}.finished ;;
+    hidden: yes
+  }
 #
 #   dimension: finished_provisional {
 #     type: number

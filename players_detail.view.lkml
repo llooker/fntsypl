@@ -1,6 +1,6 @@
 view: players_detail {
-  view_label: "Match Performance"
   sql_table_name: fpl.players_detail ;;
+  view_label: "Players"
 
 # default dimensions
   dimension: id {
@@ -11,6 +11,7 @@ view: players_detail {
   }
 
   dimension: minutes {
+    view_label: "Match Performance"
     type: number
     sql: ${TABLE}.minutes ;;
   }
@@ -19,15 +20,16 @@ view: players_detail {
     label: "Gameweek"
     type: number
     sql: ${TABLE}.round ;;
-    hidden:  yes
   }
 
   dimension: assists {
+    view_label: "Match Performance"
     type: number
     sql: ${TABLE}.assists ;;
   }
 
   dimension: points {
+    view_label: "Match Performance"
     type: number
     sql: ${TABLE}.total_points ;;
   }
@@ -38,8 +40,22 @@ view: players_detail {
   }
 
   dimension: own_goals {
+    view_label: "Match Performance"
     type: number
     sql: ${TABLE}.own_goals ;;
+  }
+
+  dimension: clean_sheet {
+    view_label: "Match Performance"
+    type: number
+    sql: ${TABLE}.clean_sheets ;;
+  }
+
+  dimension_group: kickoff {
+    view_label: "Match Information"
+    type: time
+    timeframes: [time, date, month, year]
+    sql: replace(replace(${TABLE}.kickoff_time,'T',' '),'Z','') ;;
   }
 
 # built dimensions
@@ -51,11 +67,11 @@ view: players_detail {
     sql: (${points} - 2) / (${players.now_cost} / 10) ;;
   }
 
-
 # measures
   measure: total_points {
     type: sum
     sql: ${points} ;;
+    drill_fields: [stats*]
   }
 
   measure: average_points {
@@ -84,25 +100,25 @@ view: players_detail {
   measure: total_goals_scored {
     type: sum
     sql: ${goals} ;;
-    drill_fields: [goals*]
+    drill_fields: [stats*]
   }
 
   measure: total_own_goals {
     type: sum
     sql: ${own_goals} ;;
-    drill_fields: [goals*]
+    drill_fields: [stats*]
   }
 
   measure: total_goals {
     type: number
-    sql: ${total_goals_scored} + ${total_own_goals} ;;
-    drill_fields: [goals*]
+    sql: ${total_goals_scored} ;;
+    drill_fields: [stats*]
   }
 
   measure: total_assists {
     type: sum
     sql: ${assists} ;;
-    drill_fields: [goals*]
+    drill_fields: [stats*]
   }
 
   measure: count_matches {
@@ -111,8 +127,8 @@ view: players_detail {
   }
 
 # set
-  set: goals {
-    fields: [players.web_name, own_goals, goals, assists]
+  set: stats {
+    fields: [players.web_name, round, goals, assists, clean_sheet, points]
   }
 
 # hidden
@@ -142,8 +158,9 @@ view: players_detail {
   }
 }
 
-view: players_extended {
+view: players_detail_extended {
   extends: [players_detail]
+  view_label: "Players - Extended Detail"
 
 
 #
@@ -183,10 +200,6 @@ view: players_extended {
 #     sql: ${TABLE}.bps ;;
 #   }
 #
-#   dimension: clean_sheets {
-#     type: number
-#     sql: ${TABLE}.clean_sheets ;;
-#   }
 #
 #   dimension: clearances_blocks_interceptions {
 #     type: number
@@ -241,10 +254,6 @@ view: players_extended {
 #     sql: ${TABLE}.key_passes ;;
 #   }
 #
-#   dimension: kickoff_time {
-#     type: string
-#     sql: ${TABLE}.kickoff_time ;;
-#   }
 #
 #   dimension: kickoff_time_formatted {
 #     type: string
