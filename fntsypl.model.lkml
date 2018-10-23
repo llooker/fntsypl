@@ -45,3 +45,30 @@ explore: players_detail {
 #     sql_on: ${players_detail.} = ${opposition.id} ;;
 #     relationship: many_to_one
 #   }
+
+explore: stadiums {
+  fields: [stadiums.id]
+}
+
+explore: league_members {
+  label: "FPL Players"
+
+  join: entry_picks {
+    type: left_outer
+    sql_on: ${league_members.entry} = ${entry_picks.entry}
+              and ${league_members.round} = ${entry_picks.round};;
+    relationship: one_to_many
+  }
+
+  join: players {
+    type: inner
+    sql_on: ${entry_picks.element} = ${players.id} ;;
+    relationship: many_to_one
+  }
+
+  join: entry_facts {
+    type: left_outer
+    sql_on: ${entry_picks.round} = ${entry_facts.round} ;;
+    relationship: many_to_one
+  }
+}

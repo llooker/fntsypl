@@ -59,6 +59,14 @@ view: players {
     value_format: "\"£\"#.0"
   }
 
+  dimension: price_tier {
+    view_label: "Attributes"
+    type: tier
+    style: relational
+    sql: ${now_cost} ;;
+    tiers: [3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10]
+  }
+
   dimension: points_per_game {
     type: number
     sql: ${TABLE}.points_per_game ;;
