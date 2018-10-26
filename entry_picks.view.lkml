@@ -53,24 +53,23 @@ view: entry_picks {
     type: count_distinct
     sql: ${entry} ;;
     drill_fields: [id]
-
-    filters: {
-      field: round
-      value: "9"
-    }
   }
 
   measure: count_of_captains {
     type: count
 
     filters: {
-      field: round
-      value: "9"
+      field: is_captain
+      value: "1"
     }
+  }
+
+  measure: count_of_non_captains {
+    type: count
 
     filters: {
       field: is_captain
-      value: "1"
+      value: "0"
     }
   }
 
@@ -88,11 +87,6 @@ view: entry_picks {
 
   measure: count_of_vice_captains {
     type: count
-
-    filters: {
-      field: round
-      value: "9"
-    }
 
     filters: {
       field: is_vice_captain

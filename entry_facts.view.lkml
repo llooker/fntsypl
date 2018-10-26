@@ -3,7 +3,6 @@ view: entry_facts {
     sql: SELECT round, count(distinct entry) as total_entry_count_for_week
       FROM fpl.entry_picks
       group by round
-      LIMIT 100
        ;;
   }
 

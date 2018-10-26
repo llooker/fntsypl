@@ -1,5 +1,5 @@
 view: league_members {
-  sql_table_name: fpl.overall ;;
+  sql_table_name: fpl.league_members ;;
 
   dimension: id {
     primary_key: yes
@@ -14,12 +14,36 @@ view: league_members {
 
   dimension: captain_name {
     type: string
-    sql: ${TABLE}.captain_name ;;
+    sql: CONVERT(CAST(CONVERT(${TABLE}.captain_name USING latin1) AS binary) USING utf8) ;;
+  }
+
+  dimension: chip_raw {
+    type: string
+    sql: ${TABLE}.chip ;;
+    hidden: yes
   }
 
   dimension: chip {
     type: string
-    sql: ${TABLE}.chip ;;
+    case: {
+      when: {
+        sql: ${chip_raw} = '3xc' ;;
+        label: "Triple Captain"
+      }
+      when: {
+        sql: ${chip_raw} = 'bb' ;;
+        label: "Bench Boost"
+      }
+      when: {
+        sql: ${chip_raw} = 'fh' ;;
+        label: "Free Hit"
+      }
+      when: {
+        sql: ${chip_raw} = 'wildcard' ;;
+        label: "Wildcard"
+      }
+      else: "None"
+    }
   }
 
   dimension: entry {
@@ -29,7 +53,7 @@ view: league_members {
 
   dimension: entry_name {
     type: string
-    sql: ${TABLE}.entry_name ;;
+    sql: CONVERT(CAST(CONVERT(${TABLE}.entry_name USING latin1) AS binary) USING utf8) ;;
   }
 
   dimension: event_total {
@@ -59,7 +83,7 @@ view: league_members {
 
   dimension: player_name {
     type: string
-    sql: ${TABLE}.player_name ;;
+    sql: CONVERT(CAST(CONVERT(${TABLE}.player_name USING latin1) AS binary) USING utf8) ;;
   }
 
   dimension: rank {
@@ -96,6 +120,12 @@ view: league_members {
   dimension: transfer_cost {
     type: number
     sql: ${TABLE}.transfer_cost ;;
+  }
+
+  measure: avg_transfer_cost {
+    type: average
+    sql: ${transfer_cost} ;;
+    value_format_name: decimal_1
   }
 
   measure: count {
