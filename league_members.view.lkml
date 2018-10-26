@@ -1,5 +1,5 @@
 view: league_members {
-  sql_table_name: fpl.league_members ;;
+  sql_table_name: fpl.overall ;;
 
   dimension: id {
     primary_key: yes
@@ -67,6 +67,12 @@ view: league_members {
     sql: ${TABLE}.rank ;;
   }
 
+  dimension: rank_tiers {
+    type: tier
+    tiers: [1, 100, 1000, 10000, 100000, 1000000]
+    sql: ${rank} ;;
+  }
+
   dimension: rank_sort {
     type: number
     sql: ${TABLE}.rank_sort ;;
@@ -93,7 +99,36 @@ view: league_members {
   }
 
   measure: count {
-    type: count
+    type: count_distinct
+    sql: ${entry} ;;
     drill_fields: [id, captain_name, player_name, entry_name]
+  }
+
+  measure: count_with_a_hit {
+    type: count_distinct
+    sql: ${entry} ;;
+    drill_fields: [id, captain_name, player_name, entry_name]
+
+    filters: {
+      field: transfer_cost
+      value: ">0"
+    }
+  }
+
+  measure: avg_transfers {
+    type: average
+    sql: ${event_transfers} ;;
+  }
+
+  measure: rank_tier_percentage {
+    type: number
+    sql: ${count} / ${entry_facts.total_entry_count_for_week} ;;
+    value_format_name: percent_1
+  }
+
+  measure: percent_with_a_hit {
+    type: number
+    sql: ${count_with_a_hit} / ${entry_facts.total_entry_count_for_week} ;;
+    value_format_name: percent_1
   }
 }

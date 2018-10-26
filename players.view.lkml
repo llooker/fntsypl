@@ -11,16 +11,18 @@ view: players {
   }
 
   dimension: web_name {
-    view_label: "Attributes"
+    view_label: "Players - Attributes"
     label: "Name"
+    description: "Player Name"
     type: string
     sql: CONVERT(CAST(CONVERT(${TABLE}.web_name USING latin1) AS binary) USING utf8) ;;
     required_fields: [id]
   }
 
   dimension: element_type {
-    view_label: "Attributes"
+    view_label: "Players - Attributes"
     label: "Position"
+    description: "GK, DEF, MID, FWD"
     type: string
     sql: case when ${TABLE}.element_type = 1 then 'GK'
          when ${TABLE}.element_type = 2 then 'DEF'
@@ -29,42 +31,48 @@ view: players {
   }
 
   dimension: form {
-    view_label: "Season Statistics"
+    view_label: "Players - Attributes"
+    description: "Current player form rating"
     type: number
     sql: ${TABLE}.form ;;
   }
 
   dimension: total_points_tier {
-    view_label: "Season Statistics"
+    view_label: "Players - Attributes"
+    description: "Total Points for the season bucketed by 25"
     type: tier
     style: integer
-    tiers: [1, 50, 100, 150, 200]
+    tiers: [1, 25, 50, 75, 100, 150, 200]
     sql: ${total_points} ;;
   }
 
   dimension: total_goals_scored_tier {
-    view_label: "Season Statistics"
+    view_label: "Players - Attributes"
+    description: "Total Goals for the season bucketed"
     type: tier
     style: integer
-    tiers: [1, 3, 5, 7, 10, 15, 20]
+    tiers: [1, 3, 5, 7, 10, 15]
     sql: ${goals_scored} ;;
     drill_fields: [players_detail.goals*]
   }
 
   dimension: now_cost {
-    view_label: "Attributes"
+    view_label: "Players - Attributes"
     label: "Price"
+    hidden: yes
     type: number
     sql: ${TABLE}.now_cost / 10 ;;
     value_format: "\"£\"#.0"
   }
 
   dimension: price_tier {
-    view_label: "Attributes"
+    view_label: "Players - Attributes"
+    description: "Price bucketed into 0.5 segments"
     type: tier
     style: relational
     sql: ${now_cost} ;;
     tiers: [3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10]
+    value_format: "\"£\"#.0"
   }
 
   dimension: points_per_game {
@@ -75,27 +83,44 @@ view: players {
 
   measure: count {
     label: "Count of Players"
+    description: "count of players"
     type: count
   }
 
   measure: avg_points_per_game {
+    description: "Average Points Per Game"
     type: number
     sql: ${points_per_game} ;;
     value_format_name: decimal_2
   }
 
-  dimension: transfers_out_event {
-    view_label: "Fantasy Metrics"
+  measure: transfers_out_event {
+    view_label: "Players - Attributes"
     description: "Transfers out this gameweek"
-    type: number
+    type: sum
     sql: ${TABLE}.transfers_out_event ;;
   }
 
-  dimension: transfers_in_event {
-    view_label: "Fantasy Metrics"
+  measure: transfers_in_event {
+    view_label: "Players - Attributes"
     description: "Transfers in this gameweek"
-    type: number
+    type: sum
     sql: ${TABLE}.transfers_in_event ;;
+  }
+
+  measure: price {
+    view_label: "Players - Attributes"
+    description: "FPL Price"
+    type: sum
+    sql: ${now_cost} ;;
+    value_format: "\"£\"#.0"
+  }
+
+  measure: average_price {
+    view_label: "Players - Attributes"
+    type: average
+    sql: ${now_cost} ;;
+    value_format: "\"£\"#.0"
   }
 
 # hidden dimensions
@@ -378,5 +403,5 @@ view: players {
 
 view: players_extended {
   extends: [players]
-  view_label: "Players - Extended Detail"
+  view_label: "Players - Metrics"
 }

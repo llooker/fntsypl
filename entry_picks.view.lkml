@@ -5,6 +5,7 @@ view: entry_picks {
     primary_key: yes
     type: number
     sql: ${TABLE}.id ;;
+    hidden: yes
   }
 
   dimension: element {
@@ -22,21 +23,25 @@ view: entry_picks {
   dimension: is_captain {
     type: number
     sql: ${TABLE}.is_captain ;;
+    hidden: yes
   }
 
   dimension: is_vice_captain {
     type: number
     sql: ${TABLE}.is_vice_captain ;;
+    hidden: yes
   }
 
   dimension: multiplier {
     type: number
     sql: ${TABLE}.multiplier ;;
+    hidden: yes
   }
 
   dimension: position {
     type: number
     sql: ${TABLE}.position ;;
+    hidden: yes
   }
 
   dimension: round {
@@ -67,6 +72,18 @@ view: entry_picks {
       field: is_captain
       value: "1"
     }
+  }
+
+  measure: percent_captain {
+    type: number
+    sql: ${count_of_captains} / ${entry_facts.total_entry_count_for_week} ;;
+    value_format_name: percent_1
+  }
+
+  measure: percent_vice_captain {
+    type: number
+    sql: ${count_of_vice_captains} / ${entry_facts.total_entry_count_for_week} ;;
+    value_format_name: percent_1
   }
 
   measure: count_of_vice_captains {

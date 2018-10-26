@@ -9,9 +9,11 @@ view: entry_facts {
 
   dimension: round {
     type: number
+    hidden: yes
   }
 
   dimension: total_entry_count_for_week {
     type: number
+    hidden: yes
   }
 }

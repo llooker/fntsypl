@@ -29,6 +29,8 @@ view: teams {
 #   }
 
   dimension: name {
+    label: "Team Name"
+    view_label: "Players - Attributes"
     type: string
     sql: ${TABLE}.name ;;
   }
@@ -49,7 +51,8 @@ view: teams {
 #   }
 
   dimension: short_name {
-    label: "Name (abbrev)"
+    label: "Team Name (abbrev)"
+    view_label: "Players - Attributes"
     type: string
     sql: ${TABLE}.short_name ;;
   }
@@ -57,36 +60,43 @@ view: teams {
   dimension: strength {
     type: number
     sql: ${TABLE}.strength ;;
+    hidden: yes
   }
 
   dimension: strength_attack_away {
     type: number
     sql: ${TABLE}.strength_attack_away ;;
+    hidden: yes
   }
 
   dimension: strength_attack_home {
     type: number
     sql: ${TABLE}.strength_attack_home ;;
+    hidden: yes
   }
 
   dimension: strength_defence_away {
     type: number
     sql: ${TABLE}.strength_defence_away ;;
+    hidden: yes
   }
 
   dimension: strength_defence_home {
     type: number
     sql: ${TABLE}.strength_defence_home ;;
+    hidden: yes
   }
 
   dimension: strength_overall_away {
     type: number
     sql: ${TABLE}.strength_overall_away ;;
+    hidden: yes
   }
 
   dimension: strength_overall_home {
     type: number
     sql: ${TABLE}.strength_overall_home ;;
+    hidden: yes
   }
 
 #   dimension: team_division {
@@ -104,8 +114,8 @@ view: teams {
 #     sql: ${TABLE}.win ;;
 #   }
 
-  measure: count {
-    type: count
-    drill_fields: [id, name, short_name]
-  }
+#   measure: count {
+#     type: count
+#     drill_fields: [id, name, short_name]
+#   }
 }

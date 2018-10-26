@@ -4,6 +4,7 @@ include: "*.view.lkml"         # include all views in this project
 
 explore: players {
   from: players_extended
+  sql_always_where: ${fixtures.finished} = 1 ;;
 
   join: players_detail {
     from: players_detail_extended
@@ -14,6 +15,7 @@ explore: players {
   join: fixtures {
     sql_on: ${players_detail.fixture} = ${fixtures.id} ;;
     relationship: many_to_one
+    fields: []
   }
 
   join: teams {

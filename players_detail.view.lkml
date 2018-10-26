@@ -1,6 +1,6 @@
 view: players_detail {
   sql_table_name: fpl.players_detail ;;
-  view_label: "Players"
+  view_label: "Players - Attributes"
 
 # default dimensions
   dimension: id {
@@ -14,6 +14,7 @@ view: players_detail {
     view_label: "Match Performance"
     type: number
     sql: ${TABLE}.minutes ;;
+    hidden: yes
   }
 
   dimension: round {
@@ -26,12 +27,15 @@ view: players_detail {
     view_label: "Match Performance"
     type: number
     sql: ${TABLE}.assists ;;
+    hidden: yes
   }
 
   dimension: points {
     view_label: "Match Performance"
+    label: "FPL Points"
     type: number
     sql: ${TABLE}.total_points ;;
+    hidden: yes
   }
 
   dimension: value {
@@ -43,12 +47,14 @@ view: players_detail {
     view_label: "Match Performance"
     type: number
     sql: ${TABLE}.own_goals ;;
+    hidden: yes
   }
 
   dimension: clean_sheet {
     view_label: "Match Performance"
     type: number
     sql: ${TABLE}.clean_sheets ;;
+    hidden: yes
   }
 
   dimension_group: kickoff {
@@ -56,6 +62,7 @@ view: players_detail {
     type: time
     timeframes: [time, date, month, year]
     sql: replace(replace(${TABLE}.kickoff_time,'T',' '),'Z','') ;;
+    hidden: yes
   }
 
 # built dimensions
@@ -65,26 +72,31 @@ view: players_detail {
     description: "Value add per minutes ( (Points - 2) / Value )"
     type: number
     sql: (${points} - 2) / (${players.now_cost} / 10) ;;
+    hidden: yes
   }
 
 # measures
   measure: total_points {
+    label: "FPL Points"
     type: sum
     sql: ${points} ;;
     drill_fields: [stats*]
   }
 
   measure: average_points {
+    description: "Average Points across the season"
     type: sum
     sql: ${points} ;;
   }
 
   measure: total_minutes {
+    description: "Total Minutes across the season"
     type: sum
     sql: ${minutes} ;;
   }
 
   measure: average_minutes {
+    description: "Average Minutes across the season"
     type: average
     sql: ${minutes} ;;
     value_format_name: decimal_1
@@ -92,6 +104,7 @@ view: players_detail {
 
   measure: average_vapm {
     label: "Average VAPM"
+    description: "Value add per minutes ( (Points - 2) / Value )"
     type: average
     sql: ${vapm} ;;
     value_format_name: decimal_4
@@ -160,7 +173,7 @@ view: players_detail {
 
 view: players_detail_extended {
   extends: [players_detail]
-  view_label: "Players - Extended Detail"
+  view_label: "Players - Metrics"
 
 
 #
