@@ -2,7 +2,7 @@ connection: "fntsypl"
 
 include: "*.view.lkml"         # include all views in this project
 
-persist_for: "1 second"
+persist_for: "48 hours"
 
 explore: players {
   from: players_extended
