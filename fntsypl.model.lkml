@@ -2,6 +2,8 @@ connection: "fntsypl"
 
 include: "*.view.lkml"         # include all views in this project
 
+persist_for: "1 second"
+
 explore: players {
   from: players_extended
   sql_always_where: ${fixtures.finished} = 1 ;;
