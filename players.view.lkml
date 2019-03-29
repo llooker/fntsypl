@@ -1,3 +1,13 @@
+test: test_there_are_users {
+  explore_source: users {
+    column: count {}
+  }
+  assert: there_is_data {
+    expression: ${users.count} > 0 ;;
+  }
+}
+
+
 view: players {
   sql_table_name: fpl.players ;;
   view_label: "Players"
@@ -27,14 +37,49 @@ view: players {
     sql: case when ${TABLE}.element_type = 1 then 'GK'
          when ${TABLE}.element_type = 2 then 'DEF'
          when ${TABLE}.element_type = 3 then 'MID'
-         when ${TABLE}.element_type = 4 then 'FWD' end ;;
+         when ${TABLE}.element_type = 4 then 'FWD'
+        end ;;
   }
 
-  dimension: form {
+  dimension: position_low_value {
+    type: number
+    sql: case when ${element_type} = 'GK' then 4.5
+            when ${element_type} = 'DEF' then 4.5
+            when ${element_type} = 'MID' then 5.0
+            when ${element_type} = 'FWD' then 5.5
+            end ;;
+  }
+
+  dimension: position_mid_value {
+    type: number
+    sql: case when ${element_type} = 'GK' then 5.0
+            when ${element_type} = 'DEF' then 5.0
+            when ${element_type} = 'MID' then 6.0
+            when ${element_type} = 'FWD' then 7.0
+            end ;;
+  }
+
+  dimension: price_above_mid {
+    type: number
+    sql: ${now_cost} - ${position_mid_value} ;;
+    value_format: "\"£\"#.0"
+  }
+
+  measure: value_above_price {
+    type: number
+    sql: ${form} / nullif(${price_above_mid}, 0) ;;
+  }
+
+  measure: form {
     view_label: "Players - Attributes"
     description: "Current player form rating"
-    type: number
-    sql: ${TABLE}.form ;;
+    type: sum
+    sql: ${players_detail.points} ;;
+    filters: {
+      field: players_detail.kickoff_date
+      value: "21 days"
+    }
+#     sql: ${TABLE}.form ;;
   }
 
   dimension: total_points_tier {

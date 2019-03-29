@@ -70,6 +70,12 @@ explore: league_members {
     relationship: many_to_one
   }
 
+  join: players_detail {
+    type: inner
+    sql: ${players.id} = ${players_detail.element} ;;
+    relationship: one_to_many
+  }
+
   join: entry_facts {
     type: left_outer
     sql_on: ${entry_picks.round} = ${entry_facts.round} ;;
