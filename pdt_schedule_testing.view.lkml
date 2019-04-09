@@ -1,6 +1,7 @@
 connection: "thelook_events"
 
 datagroup: a {
+  # any trigger, this is just an example
   sql_trigger: select current_date  ;;
 }
 
@@ -24,6 +25,7 @@ view: a {
 }
 
 datagroup: b {
+  # any trigger, this is just an example
   sql_trigger: select current_date  ;;
 }
 
@@ -47,6 +49,7 @@ view: b {
 }
 
 # datagroup to use for schedules - only triggers once both pdt A and pdt B have been rebuilt for the day
+# returns current_date if both have been rebuilt, null if not
 datagroup: c {
   sql_trigger: select temp_b.dt from temp_a left join temp_b on temp_a.dt = temp_b.dt ;;
 }
