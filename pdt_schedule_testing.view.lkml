@@ -1,4 +1,4 @@
-connection: "thelook_events"
+# connection: "thelook_events"
 
 datagroup: a {
   # any trigger, this is just an example
@@ -43,6 +43,7 @@ view: b {
     }
 
     datagroup_trigger: b
+    # sql_trigger_if:  ;;
   }
 
   dimension: dt {}
