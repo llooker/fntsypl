@@ -4,6 +4,8 @@ include: "*.view.lkml"         # include all views in this project
 
 persist_for: "0 seconds"
 
+explore: team_base {}
+
 explore: players {
   from: players_extended
   sql_always_where: ${fixtures.finished} = 1 ;;
