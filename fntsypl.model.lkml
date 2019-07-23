@@ -4,11 +4,11 @@ include: "*.view.lkml"         # include all views in this project
 
 persist_for: "0 seconds"
 
-explore: team_base {}
+# explore: user {}
 
 explore: players {
   from: players_extended
-  sql_always_where: ${fixtures.finished} = 1 ;;
+  # sql_always_where: ${fixtures.finished} = 1 ;;
 
   join: players_detail {
     from: players_detail_extended
@@ -32,7 +32,7 @@ explore: players_detail {
   from: players_detail_extended
 
 #   sql_always_where: DATE_FORMAT(${players_detail.kickoff_time}, '%Y-%m-%d %h:%i%p') <= NOW() ;;
-  sql_always_where: ${fixtures.finished} = 1 ;;
+  # sql_always_where: ${fixtures.finished} = 1 ;;
 
   join: fixtures {
     sql_on: ${players_detail.fixture} = ${fixtures.id} ;;

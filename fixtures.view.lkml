@@ -1,3 +1,14 @@
+
+
+# test: count {
+#   explore_source: fixtures {
+#     column: count {}
+#   }
+#   assert: data_exists {
+#     expression: ${count} > 0 ;;
+#   }
+# }
+
 view: fixtures {
   sql_table_name: fpl.fixtures ;;
 
