@@ -74,7 +74,8 @@ view: players_detail {
 # built dimensions
 
   measure: avg_bps {
-    label: "Avg BPS"
+    label: "BPS"
+    description: "average"
     type: average
     sql: ${bps} ;;
     value_format_name: decimal_1
@@ -112,7 +113,7 @@ view: players_detail {
   }
 
   measure: average_minutes {
-    label: "Avg Minutes"
+    label: "Minutes"
     description: "Average Minutes across the season"
     type: average
     sql: ${minutes} ;;
@@ -120,7 +121,7 @@ view: players_detail {
   }
 
   measure: average_vapm {
-    label: "Avg VAPM"
+    label: "VAPM"
     description: "Value add per minutes ( (Points - 2) / Value )"
     type: average
     sql: ${vapm} ;;
@@ -158,6 +159,12 @@ view: players_detail {
   measure: count_matches {
     type: count
     drill_fields: [id]
+  }
+
+  measure: clean_sheets {
+    label: "CS"
+    type: sum
+    sql: ${clean_sheet} ;;
   }
 
 # set
