@@ -133,10 +133,11 @@ view: players {
   }
 
   measure: avg_points_per_game {
+    label: "PPG"
     description: "Average Points Per Game"
     type: number
     sql: ${points_per_game} ;;
-    value_format_name: decimal_2
+    value_format_name: decimal_1
   }
 
   measure: transfers_out_event {

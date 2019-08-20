@@ -65,13 +65,27 @@ view: players_detail {
     hidden: yes
   }
 
+  dimension: bps {
+    type: number
+    sql: ${TABLE}.bps ;;
+    hidden: yes
+  }
+
 # built dimensions
+
+  measure: avg_bps {
+    label: "Avg BPS"
+    type: average
+    sql: ${bps} ;;
+    value_format_name: decimal_1
+  }
 
   dimension: vapm {
     label: "VAPM"
     description: "Value add per minutes ( (Points - 2) / Value )"
     type: number
     sql: (${points} - 2) / (${players.now_cost} / 10) ;;
+    value_format_name: decimal_2
     hidden: yes
   }
 
@@ -84,18 +98,21 @@ view: players_detail {
   }
 
   measure: average_points {
+    label: "PPG"
     description: "Average Points across the season"
-    type: sum
+    type: average
     sql: ${points} ;;
   }
 
   measure: total_minutes {
+    label: "Minutes"
     description: "Total Minutes across the season"
     type: sum
     sql: ${minutes} ;;
   }
 
   measure: average_minutes {
+    label: "Avg Minutes"
     description: "Average Minutes across the season"
     type: average
     sql: ${minutes} ;;
@@ -103,32 +120,36 @@ view: players_detail {
   }
 
   measure: average_vapm {
-    label: "Average VAPM"
+    label: "Avg VAPM"
     description: "Value add per minutes ( (Points - 2) / Value )"
     type: average
     sql: ${vapm} ;;
-    value_format_name: decimal_4
+    value_format_name: decimal_2
   }
 
   measure: total_goals_scored {
+    label: "Goals"
     type: sum
     sql: ${goals} ;;
     drill_fields: [stats*]
   }
 
   measure: total_own_goals {
+    label: "Own Goals"
     type: sum
     sql: ${own_goals} ;;
     drill_fields: [stats*]
   }
 
   measure: total_goals {
+    label: "Goals"
     type: number
     sql: ${total_goals_scored} ;;
     drill_fields: [stats*]
   }
 
   measure: total_assists {
+    label: "Assists"
     type: sum
     sql: ${assists} ;;
     drill_fields: [stats*]
@@ -208,10 +229,7 @@ view: players_detail_extended {
 #     sql: ${TABLE}.bonus ;;
 #   }
 #
-#   dimension: bps {
-#     type: number
-#     sql: ${TABLE}.bps ;;
-#   }
+
 #
 #
 #   dimension: clearances_blocks_interceptions {
