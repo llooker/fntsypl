@@ -44,6 +44,19 @@ explore: players_detail {
     sql_on: ${players.id} = ${players_detail.element} ;;
     relationship: many_to_one
   }
+
+  join: understat_mapping {
+    fields: []
+    type: left_outer
+    sql_on: ${players.id} = ${understat_mapping.fpl_id} ;;
+    relationship: one_to_one
+  }
+
+  join: understat {
+    type: left_outer
+    sql_on: ${understat_mapping.understat_id} = ${understat.id} ;;
+    relationship: one_to_one
+  }
 }
 
 #   join: opposition {
