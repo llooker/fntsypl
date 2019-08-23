@@ -12,6 +12,7 @@ view: players_detail {
 
   dimension: minutes {
     view_label: "Match Performance"
+    label: "M"
     type: number
     sql: ${TABLE}.minutes ;;
     hidden: yes
@@ -106,14 +107,14 @@ view: players_detail {
   }
 
   measure: total_minutes {
-    label: "Minutes"
+    label: "M"
     description: "Total Minutes across the season"
     type: sum
     sql: ${minutes} ;;
   }
 
   measure: average_minutes {
-    label: "Minutes"
+    label: "M"
     description: "Average Minutes across the season"
     type: average
     sql: ${minutes} ;;
@@ -129,28 +130,28 @@ view: players_detail {
   }
 
   measure: total_goals_scored {
-    label: "Goals"
+    label: "G"
     type: sum
     sql: ${goals} ;;
     drill_fields: [stats*]
   }
 
   measure: total_own_goals {
-    label: "Own Goals"
+    label: "OG"
     type: sum
     sql: ${own_goals} ;;
     drill_fields: [stats*]
   }
 
   measure: total_goals {
-    label: "Goals"
+    label: "G"
     type: number
     sql: ${total_goals_scored} ;;
     drill_fields: [stats*]
   }
 
   measure: total_assists {
-    label: "Assists"
+    label: "A"
     type: sum
     sql: ${assists} ;;
     drill_fields: [stats*]

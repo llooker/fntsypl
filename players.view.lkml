@@ -31,7 +31,7 @@ view: players {
 
   dimension: element_type {
     view_label: "Players - Attributes"
-    label: "Position"
+    label: "POS"
     description: "GK, DEF, MID, FWD"
     type: string
     sql: case when ${TABLE}.element_type = 1 then 'GK'
