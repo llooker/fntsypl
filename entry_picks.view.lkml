@@ -49,6 +49,19 @@ view: entry_picks {
     sql: ${TABLE}.round ;;
   }
 
+  measure: captain_points {
+    type: sum
+    sql: case when ${is_captain} = 1 and ${players_detail.minutes} > 0 then ${players_detail.points} * ${multiplier}
+           -- when ${is_vice_captain} = 1 and ${players_detail.minutes} > 0 then ${players_detail.points} * ${multiplier}
+            else 0 end ;;
+  }
+
+  measure: captain_percent {
+    type: number
+    sql: ${captain_points} / ifnull(${players_detail.total_points}, 0) ;;
+    value_format_name: percent_1
+  }
+
   measure: count_of_entries {
     type: count_distinct
     sql: ${entry} ;;

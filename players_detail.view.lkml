@@ -31,12 +31,19 @@ view: players_detail {
     hidden: yes
   }
 
+  dimension: bonus {
+    type: number
+    sql: ${TABLE}.bonus ;;
+    hidden: yes
+  }
+
+
   dimension: points {
     view_label: "Match Performance"
     label: "FPL Points"
     type: number
     sql: ${TABLE}.total_points ;;
-    hidden: yes
+    # hidden: yes
   }
 
   dimension: value {
@@ -131,9 +138,10 @@ view: players_detail {
 
   measure: total_goals_scored {
     label: "G"
+    description: "total"
     type: sum
     sql: ${goals} ;;
-    drill_fields: [stats*]
+    drill_fields: [players.web_name, total_goals_scored, total_points]
   }
 
   measure: total_own_goals {
@@ -147,7 +155,7 @@ view: players_detail {
     label: "G"
     type: number
     sql: ${total_goals_scored} ;;
-    drill_fields: [stats*]
+    drill_fields: [players.web_name, total_goals_scored, total_points]
   }
 
   measure: total_assists {
@@ -166,6 +174,37 @@ view: players_detail {
     label: "CS"
     type: sum
     sql: ${clean_sheet} ;;
+  }
+
+  measure: two_pt_appearances {
+    type: count
+    filters: {
+      field: minutes
+      value: ">59"
+    }
+  }
+
+  measure: one_pt_appearances {
+    type: count
+    filters: {
+      field: minutes
+      value: "<=59"
+    }
+  }
+
+  measure: minutes_pts {
+    type: number
+    sql: (${two_pt_appearances} * 2) + ${one_pt_appearances} ;;
+  }
+
+  measure: cs_pts {
+    type: sum
+    sql: ${players.cs_points} * ${clean_sheet} ;;
+  }
+
+  measure: total_bonus {
+    type: sum
+    sql: ${bonus} ;;
   }
 
 # set
@@ -232,11 +271,7 @@ view: players_detail_extended {
 #     sql: ${TABLE}.big_chances_missed ;;
 #   }
 #
-#   dimension: bonus {
-#     type: number
-#     sql: ${TABLE}.bonus ;;
-#   }
-#
+
 
 #
 #

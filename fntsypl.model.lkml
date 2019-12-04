@@ -6,6 +6,20 @@ persist_for: "2 hours"
 
 # explore: user {}
 
+explore: entry_picks {
+  join: players_detail {
+    type: inner
+    sql_on: ${entry_picks.element} = ${players_detail.element} and ${entry_picks.round} = ${players_detail.round} ;;
+    relationship: one_to_one
+  }
+
+  join: league_members {
+    type: inner
+    sql_on: ${entry_picks.entry} = ${league_members.entry} and ${entry_picks.round} = ${league_members.round}
+       ;;
+  }
+}
+
 explore: players {
   from: players_extended
   # sql_always_where: ${fixtures.finished} = 1 ;;
@@ -45,18 +59,26 @@ explore: players_detail {
     relationship: many_to_one
   }
 
-  join: understat_mapping {
-    fields: []
+  join: understat {
     type: left_outer
-    sql_on: ${players.id} = ${understat_mapping.fpl_id} ;;
+    sql_on: (${understat.player_name} = concat(${players.first_name}, ' ', ${players.second_name}))
+          or (${understat.player_name} = ${players.web_name})
+          ;; # and ${understat.team_title} = ${players.team} ;;
     relationship: one_to_one
   }
 
-  join: understat {
-    type: left_outer
-    sql_on: ${understat_mapping.understat_id} = ${understat.id} ;;
-    relationship: one_to_one
-  }
+#   join: understat_mapping {
+#     fields: []
+#     type: left_outer
+#     sql_on: ${players.id} = ${understat_mapping.fpl_id} ;;
+#     relationship: one_to_one
+#   }
+
+#   join: understat {
+#     type: left_outer
+#     sql_on: ${understat_mapping.understat_id} = ${understat.id} ;;
+#     relationship: one_to_one
+#   }
 }
 
 #   join: opposition {
@@ -87,7 +109,7 @@ explore: league_members {
 
   join: players_detail {
     type: inner
-    sql: ${players.id} = ${players_detail.element} ;;
+    sql_on: ${players.id} = ${players_detail.element} ;;
     relationship: one_to_many
   }
 

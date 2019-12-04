@@ -80,9 +80,56 @@ view: understat {
 #     html: {{rendered_value}} ( {{ goals._value }} ) ;;
   }
 
+  dimension: x_g_pts {
+    type: number
+    sql: ${x_g} * ${players.goal_points} ;;
+    value_format_name: decimal_2
+  }
+
+  measure: xg_pts {
+    description: "xg * goal pts"
+    type: number
+    sql: ${x_g_pts}  ;;
+    value_format_name: decimal_2
+  }
+
   dimension: x_g {
     type: number
     sql: ${TABLE}.xG ;;
+  }
+
+  measure: xa_pts {
+    description: "xa * assist pts"
+    type: sum
+    sql: ${x_a} * 3 ;;
+    value_format_name: decimal_2
+  }
+
+  measure: xg_xa_pts {
+    type: number
+    sql: ${xg_pts} + ${xa_pts} ;;
+    value_format_name: decimal_2
+  }
+
+  measure: xpts {
+    type: number
+    sql: ${xg_xa_pts} + ${players_detail.minutes_pts} + ${players_detail.total_bonus} + ${players_detail.cs_pts} ;;
+    value_format_name: decimal_2
+  }
+
+  measure: xvapm {
+    label: "xVAPM"
+    description: "Value add per minutes ( (xPoints - 2) / Value )"
+    type: number
+    sql: (${xpts} - ${players_detail.minutes_pts}) / (${players.now_cost} / 10) ;;
+    value_format_name: decimal_2
+#     hidden: yes
+  }
+
+  measure: xpts_delta {
+    type: number
+    sql: ${players_detail.total_points} - ${xpts} ;;
+    value_format_name: decimal_2
   }
 
   measure: xg {

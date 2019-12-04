@@ -49,6 +49,7 @@ view: league_members {
   dimension: entry {
     type: number
     sql: ${TABLE}.entry ;;
+    # html: {{ player_name }} ;;
   }
 
   dimension: entry_name {
@@ -59,6 +60,11 @@ view: league_members {
   dimension: event_total {
     type: number
     sql: ${TABLE}.event_total ;;
+  }
+
+  measure: gw_pts_total {
+    type: sum
+    sql: ${total} ;;
   }
 
   dimension: event_transfers {
@@ -122,6 +128,11 @@ view: league_members {
     sql: ${TABLE}.transfer_cost ;;
   }
 
+  measure: total_transfer_cost {
+    type: sum
+    sql: ${transfer_cost} ;;
+  }
+
   measure: avg_transfer_cost {
     type: average
     sql: ${transfer_cost} ;;
@@ -143,6 +154,16 @@ view: league_members {
       field: transfer_cost
       value: ">0"
     }
+  }
+
+  measure: total_transfers {
+    type: sum
+    sql: ${event_transfers} ;;
+  }
+
+  measure: max_pts {
+    type: max
+    sql: ${total} ;;
   }
 
   measure: avg_transfers {

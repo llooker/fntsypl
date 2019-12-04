@@ -17,7 +17,7 @@ view: players {
     primary_key: yes
     type: number
     sql: ${TABLE}.id ;;
-    hidden: yes
+#     hidden: yes
   }
 
   dimension: web_name {
@@ -39,6 +39,16 @@ view: players {
          when ${TABLE}.element_type = 3 then 'MID'
          when ${TABLE}.element_type = 4 then 'FWD'
         end ;;
+  }
+
+  dimension: goal_points {
+    type: number
+    sql: case when ${element_type} in ('GK','DEF') then 6 when ${element_type} = 'MID' then 5 else 4 end ;;
+  }
+
+  dimension: cs_points {
+    type: number
+    sql: case when ${element_type} in ('GK','DEF') then 4 when ${element_type} = 'MID' then 1 else 0 end ;;
   }
 
   dimension: position_low_value {
@@ -215,6 +225,11 @@ view: players {
 #     sql: ${TABLE}.bonus ;;
 #   }
 #
+#   measure: total_bonus {
+#     type: sum
+#     sql: ${bonus} ;;
+#   }
+#
 #   dimension: bps {
 #     type: number
 #     sql: ${TABLE}.bps ;;
@@ -275,10 +290,11 @@ view: players {
 #     sql: ${TABLE}.event_points ;;
 #   }
 
-#   dimension: first_name {
-#     type: string
-#     sql: ${TABLE}.first_name ;;
-#   }
+  dimension: first_name {
+    type: string
+    sql: CONVERT(CAST(CONVERT(${TABLE}.first_name USING latin1) AS binary) USING utf8) ;;
+#     hidden: yes
+  }
 
 
 #
@@ -329,10 +345,11 @@ view: players {
 #     sql: ${TABLE}.minutes ;;
 #   }
 #
-#   dimension: name {
-#     type: string
-#     sql: ${TABLE}.name ;;
-#   }
+  dimension: name {
+    type: string
+    sql: ${TABLE}.name ;;
+    hidden: yes
+  }
 #
 #   dimension: news {
 #     type: string
@@ -377,10 +394,11 @@ view: players {
 #     sql: ${TABLE}.saves ;;
 #   }
 #
-#   dimension: second_name {
-#     type: string
-#     sql: ${TABLE}.second_name ;;
-#   }
+  dimension: second_name {
+    type: string
+    sql: CONVERT(CAST(CONVERT(${TABLE}.second_name USING latin1) AS binary) USING utf8) ;;
+#     hidden: yes
+  }
 #
 #   dimension: selected_by_percent {
 #     type: number
