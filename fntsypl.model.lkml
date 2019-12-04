@@ -2,7 +2,11 @@ connection: "fntsypl"
 
 include: "*.view.lkml"         # include all views in this project
 
-persist_for: "2 hours"
+persist_with: min
+
+datagroup: min {
+  sql_trigger: SELECT sum(minutes) FROM fpl.players_detail ;;
+}
 
 # explore: user {}
 
