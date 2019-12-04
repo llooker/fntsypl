@@ -29,6 +29,17 @@ view: players {
     required_fields: [id]
   }
 
+  dimension: web_name_image {
+    view_label: "Players - Attributes"
+    label: "Name"
+    description: "Player Name (Image)"
+    type: string
+    sql: CONVERT(CAST(CONVERT(${TABLE}.web_name USING latin1) AS binary) USING utf8) ;;
+#     html: <img src="https://premierleague-static-files.s3.amazonaws.com/premierleague/photos/players/250x250/p{{code._value}}.png" height = 100 width = 100 /><br><p><{{ web_name._value }}</p> ;;
+    html: <center><img src="https://premierleague-static-files.s3.amazonaws.com/premierleague/photos/players/250x250/p{{code._value}}.png" height = 75 width = 75 /> <br> <br> {{ web_name._value }}</center> ;;
+    required_fields: [id]
+  }
+
   dimension: element_type {
     view_label: "Players - Attributes"
     label: "POS"
@@ -240,10 +251,11 @@ view: players {
 #     sql: ${TABLE}.clean_sheets ;;
 #   }
 #
-#   dimension: code {
-#     type: number
-#     sql: ${TABLE}.code ;;
-#   }
+  dimension: code {
+    type: number
+    sql: ${TABLE}.code ;;
+    hidden: yes
+  }
 #
 #   dimension: cost_change_event {
 #     type: number
