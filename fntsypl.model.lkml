@@ -1,4 +1,4 @@
-connection: "fntsypl"
+connection: "fpl-gcp"
 
 include: "*.view.lkml"         # include all views in this project
 
