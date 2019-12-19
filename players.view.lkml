@@ -20,6 +20,13 @@ view: players {
     hidden: yes
   }
 
+  dimension: image {
+    type: string
+    sql: 1 ;;
+    html: <center><img src="https://premierleague-static-files.s3.amazonaws.com/premierleague/photos/players/250x250/p{{code._value}}.png" height = 100px width = 100px /></center> ;;
+
+  }
+
   dimension: web_name {
     view_label: "Players - Attributes"
     label: "Name"
@@ -28,6 +35,10 @@ view: players {
 #     sql: CONVERT(CAST(CONVERT(${TABLE}.web_name USING latin1) AS binary) USING utf8) ;;
     sql: ${TABLE}.web_name ;;
     required_fields: [id]
+    link: {
+      url: "/dashboards/2"
+      label: "{{ value }} Dashboard"
+    }
   }
 
   dimension: web_name_image {
