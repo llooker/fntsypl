@@ -1,4 +1,4 @@
-view: entry_facts {
+view: round_facts {
   derived_table: {
     sql: SELECT round, count(distinct entry) as total_entry_count_for_week
       FROM fpl.entry_picks
@@ -9,6 +9,7 @@ view: entry_facts {
   dimension: round {
     type: number
     hidden: yes
+    primary_key: yes
   }
 
   dimension: total_entry_count_for_week {

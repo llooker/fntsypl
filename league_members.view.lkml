@@ -173,13 +173,13 @@ view: league_members {
 
   measure: rank_tier_percentage {
     type: number
-    sql: ${count} / ${entry_facts.total_entry_count_for_week} ;;
+    sql: ${count} / ${round_facts.total_entry_count_for_week} ;;
     value_format_name: percent_1
   }
 
   measure: percent_with_a_hit {
     type: number
-    sql: ${count_with_a_hit} / ${entry_facts.total_entry_count_for_week} ;;
+    sql: ${count_with_a_hit} / ${round_facts.total_entry_count_for_week} ;;
     value_format_name: percent_1
   }
 }

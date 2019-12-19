@@ -17,7 +17,7 @@ view: players {
     primary_key: yes
     type: number
     sql: ${TABLE}.id ;;
-#     hidden: yes
+    hidden: yes
   }
 
   dimension: web_name {
@@ -25,16 +25,17 @@ view: players {
     label: "Name"
     description: "Player Name"
     type: string
-    sql: CONVERT(CAST(CONVERT(${TABLE}.web_name USING latin1) AS binary) USING utf8) ;;
+#     sql: CONVERT(CAST(CONVERT(${TABLE}.web_name USING latin1) AS binary) USING utf8) ;;
+    sql: ${TABLE}.web_name ;;
     required_fields: [id]
   }
 
   dimension: web_name_image {
     view_label: "Players - Attributes"
     label: "Name"
-    description: "Player Name (Image)"
+    description: "Player Name (with Image)"
     type: string
-    sql: CONVERT(CAST(CONVERT(${TABLE}.web_name USING latin1) AS binary) USING utf8) ;;
+    sql: 1 ;;
 #     html: <img src="https://premierleague-static-files.s3.amazonaws.com/premierleague/photos/players/250x250/p{{code._value}}.png" height = 100 width = 100 /><br><p><{{ web_name._value }}</p> ;;
     html: <center><img src="https://premierleague-static-files.s3.amazonaws.com/premierleague/photos/players/250x250/p{{code._value}}.png" height = 75 width = 75 /> <br> <br> {{ web_name._value }}</center> ;;
     required_fields: [id]
@@ -53,11 +54,13 @@ view: players {
   }
 
   dimension: goal_points {
+    hidden: yes
     type: number
     sql: case when ${element_type} in ('GK','DEF') then 6 when ${element_type} = 'MID' then 5 else 4 end ;;
   }
 
   dimension: cs_points {
+    hidden: yes
     type: number
     sql: case when ${element_type} in ('GK','DEF') then 4 when ${element_type} = 'MID' then 1 else 0 end ;;
   }
@@ -69,6 +72,7 @@ view: players {
             when ${element_type} = 'MID' then 5.0
             when ${element_type} = 'FWD' then 5.5
             end ;;
+    hidden: yes
   }
 
   dimension: position_mid_value {
@@ -78,9 +82,11 @@ view: players {
             when ${element_type} = 'MID' then 6.0
             when ${element_type} = 'FWD' then 7.0
             end ;;
+    hidden: yes
   }
 
   dimension: price_above_mid {
+    description: "How highly priced above a mid-value player for respective position"
     type: number
     sql: ${now_cost} - ${position_mid_value} ;;
     value_format: "\"£\"#.0"
@@ -104,7 +110,7 @@ view: players {
   }
 
   dimension: total_points_tier {
-    view_label: "Players - Attributes"
+    view_label: "Players - Season Metrics"
     description: "Total Points for the season bucketed by 25"
     type: tier
     style: integer
@@ -113,7 +119,7 @@ view: players {
   }
 
   dimension: total_goals_scored_tier {
-    view_label: "Players - Attributes"
+    view_label: "Players - Season Metrics"
     description: "Total Goals for the season bucketed"
     type: tier
     style: integer
@@ -159,6 +165,7 @@ view: players {
     type: number
     sql: ${points_per_game} ;;
     value_format_name: decimal_1
+    hidden: yes
   }
 
   measure: transfers_out_event {
@@ -305,7 +312,7 @@ view: players {
   dimension: first_name {
     type: string
     sql: CONVERT(CAST(CONVERT(${TABLE}.first_name USING latin1) AS binary) USING utf8) ;;
-#     hidden: yes
+    hidden: yes
   }
 
 
@@ -409,7 +416,7 @@ view: players {
   dimension: second_name {
     type: string
     sql: CONVERT(CAST(CONVERT(${TABLE}.second_name USING latin1) AS binary) USING utf8) ;;
-#     hidden: yes
+    hidden: yes
   }
 #
 #   dimension: selected_by_percent {

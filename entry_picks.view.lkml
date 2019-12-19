@@ -88,13 +88,13 @@ view: entry_picks {
 
   measure: percent_captain {
     type: number
-    sql: ${count_of_captains} / ${entry_facts.total_entry_count_for_week} ;;
+    sql: ${count_of_captains} / ${round_facts.total_entry_count_for_week} ;;
     value_format_name: percent_1
   }
 
   measure: percent_vice_captain {
     type: number
-    sql: ${count_of_vice_captains} / ${entry_facts.total_entry_count_for_week} ;;
+    sql: ${count_of_vice_captains} / ${round_facts.total_entry_count_for_week} ;;
     value_format_name: percent_1
   }
 
@@ -109,7 +109,7 @@ view: entry_picks {
 
   measure: percent_of_entries {
     type: number
-    sql: ${count_of_entries} / ${entry_facts.total_entry_count_for_week} ;;
+    sql: ${count_of_entries} / ${round_facts.total_entry_count_for_week} ;;
     value_format_name: percent_1
   }
 }

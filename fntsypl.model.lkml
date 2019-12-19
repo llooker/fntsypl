@@ -17,10 +17,22 @@ explore: entry_picks {
     relationship: one_to_one
   }
 
+  join: players {
+    type: inner
+    sql_on: ${players_detail.element} = ${players.id} ;;
+    relationship: many_to_one
+  }
+
   join: league_members {
     type: inner
-    sql_on: ${entry_picks.entry} = ${league_members.entry} and ${entry_picks.round} = ${league_members.round}
-       ;;
+    sql_on: ${entry_picks.entry} = ${league_members.entry} and ${entry_picks.round} = ${league_members.round} ;;
+    relationship: many_to_one
+  }
+
+  join: round_facts {
+    type: left_outer
+    sql_on: ${entry_picks.round} = ${round_facts.round} ;;
+    relationship: many_to_one
   }
 }
 
@@ -47,6 +59,7 @@ explore: players {
 }
 
 explore: players_detail {
+  label: "Player Performance"
   from: players_detail_extended
 
 #   sql_always_where: DATE_FORMAT(${players_detail.kickoff_time}, '%Y-%m-%d %h:%i%p') <= NOW() ;;
@@ -117,9 +130,9 @@ explore: league_members {
     relationship: one_to_many
   }
 
-  join: entry_facts {
+  join: round_facts {
     type: left_outer
-    sql_on: ${entry_picks.round} = ${entry_facts.round} ;;
+    sql_on: ${entry_picks.round} = ${round_facts.round} ;;
     relationship: many_to_one
   }
 }
