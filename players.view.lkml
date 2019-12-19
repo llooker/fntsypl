@@ -39,6 +39,11 @@ view: players {
       url: "/dashboards/2"
       label: "{{ value }} Dashboard"
     }
+    link: {
+      label: "Open {{ value }} on Understat"
+      url: "https://understat.com/player/{{ understat.id._value }}"
+      icon_url: "http://understat.com/favicon.ico"
+    }
   }
 
   dimension: web_name_image {
@@ -322,7 +327,8 @@ view: players {
 
   dimension: first_name {
     type: string
-    sql: CONVERT(CAST(CONVERT(${TABLE}.first_name USING latin1) AS binary) USING utf8) ;;
+    sql: ${TABLE}.first_name ;;
+#     sql: CONVERT(CAST(CONVERT(${TABLE}.first_name USING latin1) AS binary) USING utf8) ;;
     hidden: yes
   }
 
@@ -426,7 +432,8 @@ view: players {
 #
   dimension: second_name {
     type: string
-    sql: CONVERT(CAST(CONVERT(${TABLE}.second_name USING latin1) AS binary) USING utf8) ;;
+    sql: ${TABLE}.second_name ;;
+#     sql: CONVERT(CAST(CONVERT(${TABLE}.second_name USING latin1) AS binary) USING utf8) ;;
     hidden: yes
   }
 #

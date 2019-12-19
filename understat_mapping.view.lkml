@@ -9,7 +9,7 @@ view: understat_mapping {
 
   dimension: understat_id {
     type: number
-    # hidden: yes
+#     hidden: yes
     sql: ${TABLE}.understat_id ;;
   }
 

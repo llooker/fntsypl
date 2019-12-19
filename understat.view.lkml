@@ -112,6 +112,7 @@ view: understat {
   }
 
   measure: xpts {
+    label: "xPts"
     type: number
     sql: ${xg_xa_pts} + ${players_detail.minutes_pts} + ${players_detail.total_bonus} + ${players_detail.cs_pts} ;;
     value_format_name: decimal_2

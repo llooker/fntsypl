@@ -34,6 +34,12 @@ explore: entry_picks {
     sql_on: ${entry_picks.round} = ${round_facts.round} ;;
     relationship: many_to_one
   }
+
+  join: teams {
+    type: inner
+    sql_on: ${players.team} = ${teams.id} ;;
+    relationship: many_to_one
+  }
 }
 
 explore: players {
@@ -56,6 +62,7 @@ explore: players {
     sql_on: ${players.team} = ${teams.id} ;;
     relationship: many_to_one
   }
+
 }
 
 explore: players_detail {
@@ -78,18 +85,26 @@ explore: players_detail {
 
   join: understat {
     type: left_outer
-    sql_on: (${understat.player_name} = concat(${players.first_name}, ' ', ${players.second_name}))
-          or (${understat.player_name} = ${players.web_name})
+    sql_on: ${understat.player_name} = concat(${players.first_name}, ' ', ${players.second_name})
+          or ${understat.player_name} = ${players.web_name}
+          or SUBSTRING_INDEX(${understat.player_name}, ' ', -1) = ${players.web_name}
+          or ${understat.player_name} = concat(${players.second_name}, ' ', ${players.first_name})
           ;; # and ${understat.team_title} = ${players.team} ;;
     relationship: one_to_one
   }
 
-#   join: understat_mapping {
-#     fields: []
-#     type: left_outer
-#     sql_on: ${players.id} = ${understat_mapping.fpl_id} ;;
-#     relationship: one_to_one
-#   }
+  join: understat_mapping {
+    fields: []
+    type: left_outer
+    sql_on: ${players.id} = ${understat_mapping.fpl_id} ;;
+    relationship: one_to_one
+  }
+
+  join: teams {
+    type: inner
+    sql_on: ${players.team} = ${teams.id} ;;
+    relationship: many_to_one
+  }
 
 #   join: understat {
 #     type: left_outer
