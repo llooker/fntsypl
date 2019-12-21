@@ -5,7 +5,8 @@ include: "*.view.lkml"         # include all views in this project
 persist_with: min
 
 datagroup: min {
-  sql_trigger: SELECT sum(minutes) FROM fpl.players_detail ;;
+  sql_trigger: SELECT sum(minutes) FROM fpl.players_detail where round >= 18 ;;
+  max_cache_age: "2 hours"
 }
 
 # explore: user {}
