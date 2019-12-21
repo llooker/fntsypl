@@ -14,7 +14,8 @@ view: league_members {
 
   dimension: captain_name {
     type: string
-    sql: CONVERT(CAST(CONVERT(${TABLE}.captain_name USING latin1) AS binary) USING utf8) ;;
+    sql: ${TABLE}.captain_name ;;
+    # sql: CONVERT(CAST(CONVERT(${TABLE}.captain_name USING latin1) AS binary) USING utf8) ;;
   }
 
   dimension: chip_raw {
@@ -54,7 +55,8 @@ view: league_members {
 
   dimension: entry_name {
     type: string
-    sql: CONVERT(CAST(CONVERT(${TABLE}.entry_name USING latin1) AS binary) USING utf8) ;;
+    sql: ${TABLE}.entry_name ;;
+    # sql: CONVERT(CAST(CONVERT(${TABLE}.entry_name USING latin1) AS binary) USING utf8) ;;
   }
 
   dimension: event_total {
@@ -89,7 +91,8 @@ view: league_members {
 
   dimension: player_name {
     type: string
-    sql: CONVERT(CAST(CONVERT(${TABLE}.player_name USING latin1) AS binary) USING utf8) ;;
+    sql: ${TABLE}.player_name ;;
+    # sql: CONVERT(CAST(CONVERT(${TABLE}.player_name USING latin1) AS binary) USING utf8) ;;
   }
 
   dimension: rank {
@@ -142,13 +145,13 @@ view: league_members {
   measure: count {
     type: count_distinct
     sql: ${entry} ;;
-    drill_fields: [player_name, entry_name, captain_name, gw_pts_total]
+    drill_fields: [player_name, entry_name, captain_name, event_total]
   }
 
   measure: count_with_a_hit {
     type: count_distinct
     sql: ${entry} ;;
-    drill_fields: [player_name, entry_name, captain_name, gw_pts_total]
+    drill_fields: [player_name, entry_name, captain_name, event_total]
 
     filters: {
       field: transfer_cost

@@ -65,7 +65,7 @@ view: entry_picks {
   measure: count_of_entries {
     type: count_distinct
     sql: ${entry} ;;
-    drill_fields: [id]
+    drill_fields: []
   }
 
   measure: count_of_captains {
