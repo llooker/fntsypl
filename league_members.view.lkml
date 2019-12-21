@@ -142,13 +142,13 @@ view: league_members {
   measure: count {
     type: count_distinct
     sql: ${entry} ;;
-    drill_fields: [id, captain_name, player_name, entry_name]
+    drill_fields: [player_name, entry_name, captain_name, gw_pts_total]
   }
 
   measure: count_with_a_hit {
     type: count_distinct
     sql: ${entry} ;;
-    drill_fields: [id, captain_name, player_name, entry_name]
+    drill_fields: [player_name, entry_name, captain_name, gw_pts_total]
 
     filters: {
       field: transfer_cost
