@@ -36,7 +36,7 @@ view: players {
     sql: ${TABLE}.web_name ;;
     required_fields: [id]
     link: {
-      url: "embed/dashboards/2"
+      url: "/embed/dashboards/2"
       label: "{{ value }} Dashboard"
     }
     link: {
