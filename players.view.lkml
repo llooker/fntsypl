@@ -35,6 +35,7 @@ view: players {
 #     sql: CONVERT(CAST(CONVERT(${TABLE}.web_name USING latin1) AS binary) USING utf8) ;;
     sql: ${TABLE}.web_name ;;
     required_fields: [id]
+
     link: {
       url: "/embed/dashboards/2"
       label: "{{ value }} Dashboard"
@@ -44,6 +45,28 @@ view: players {
       url: "https://understat.com/player/{{ understat.id._value }}"
       icon_url: "http://understat.com/favicon.ico"
     }
+    # action: {
+    #   label: "Update Position"
+    #   url: "https://us-central1-bryce-personal-250216.cloudfunctions.net/update-position"
+    #   form_param: {
+    #     name: "pos"
+    #     label: "New Position"
+    #     type: select
+    #     option: {
+    #       name: "DEF"
+    #       label: "DEF"
+    #     }
+    #     option: {
+    #       name: "MID"
+    #       label: "MID"
+    #     }
+    #   }
+    #   param: {
+    #     name: "id"
+    #     value: "{{ id }}"
+    #   }
+
+    # }
   }
 
   dimension: web_name_image {
