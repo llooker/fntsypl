@@ -1,3 +1,12 @@
+# include: "players.view"
+
+# explore: pd {
+#   from: players_detail
+#   join: players {
+#     sql_on: ${players.id} = ${pd.element} ;;
+#   }
+# }
+
 view: players_detail {
   sql_table_name: fpl.players_detail ;;
   view_label: "Players - Attributes"
@@ -35,6 +44,12 @@ view: players_detail {
     type: number
     sql: ${TABLE}.bonus ;;
     hidden: yes
+  }
+
+  measure: points_with_bonus {
+    type: number
+    sql: ${total_bonus} + ${total_points} ;;
+    html: {{ total_points._value }} ({{ total_bonus._value }}) ;;
   }
 
 
@@ -111,6 +126,7 @@ view: players_detail {
     description: "Average Points across the season"
     type: average
     sql: ${points} ;;
+    tags: ["stats"]
   }
 
   measure: total_minutes {
@@ -118,6 +134,7 @@ view: players_detail {
     description: "Total Minutes across the season"
     type: sum
     sql: ${minutes} ;;
+    tags: ["stats"]
   }
 
   measure: average_minutes {
@@ -134,6 +151,7 @@ view: players_detail {
     type: average
     sql: ${vapm} ;;
     value_format_name: decimal_2
+    tags: ["stats"]
   }
 
   measure: total_goals_scored {
@@ -142,6 +160,7 @@ view: players_detail {
     type: sum
     sql: ${goals} ;;
     drill_fields: [players.web_name, total_goals_scored, total_points]
+    tags: ["stats"]
   }
 
   measure: total_own_goals {
@@ -149,6 +168,7 @@ view: players_detail {
     type: sum
     sql: ${own_goals} ;;
     drill_fields: [stats*]
+    tags: ["stats"]
   }
 
   measure: total_goals {

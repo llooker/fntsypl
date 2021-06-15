@@ -4,6 +4,7 @@ application: bryce_ks {
   label: "bryce Kitchen sink"
 #   url: "http://localhost:8080/data_portal.js"
   url: "http://localhost:8080/bundle.js"
+  # url: "/bundle.js"
   # url: "https://cdn.jsdelivr.net/gh/ContrastingSounds/simple_data_portal@e905401785c80512891b4bb67fe18766b6c8fc24/dist/data_portal.js"
   # url: "https://github.com/ContrastingSounds/simple_data_portal/blob/master/dist/data_portal.js"
   # entitlements: {
